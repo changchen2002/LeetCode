@@ -11,6 +11,5 @@ class Solution:
                 char=stack.pop()
                 if char!=hashmap[c]:
                     return False
-        if not stack:
-            return True
-        return False
+        
+        return not stack
