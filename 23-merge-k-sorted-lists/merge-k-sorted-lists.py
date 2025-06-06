@@ -6,24 +6,21 @@
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         heap=[]
-        count=0 #add count as a second parameter for comparing when values are equal
-        for l in lists:
-            if l:
-                heapq.heappush(heap, (l.val,count,l))
-                count+=1
-        dummy=ListNode(0)
+        
+        for i,node in enumerate(lists):
+            if node:
+                heapq.heappush(heap,(node.val,i,node))
+            #或者heap = [(node.val, node) for node in lists if node]
+            #   heapq.heapify(heap)
+        dummy=ListNode()
         cur=dummy
         while heap:
-            val,_,node=heapq.heappop(heap)
+            val,i,node=heapq.heappop(heap)
             cur.next=node
             cur=cur.next
-
             if node.next:
-                heapq.heappush(heap, (node.next.val,count,node.next))
-                count+=1
+                heapq.heappush(heap,(node.next.val,i,node.next))
+
         return dummy.next
-
-
-        
-
-        
+            
+            
