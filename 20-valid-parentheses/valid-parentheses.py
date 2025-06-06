@@ -1,11 +1,16 @@
 class Solution:
     def isValid(self, s: str) -> bool:
+        hashmap={')':'(',']':'[','}':'{'}
         stack=[]
-        mapping={")":"(","}":"{","]":"["}
         for c in s:
-            if c in mapping.values():
+            if c in hashmap.values():
                 stack.append(c)
-            elif c in mapping.keys():
-                if not stack or mapping[c]!=stack.pop():
+            if c in hashmap.keys():
+                if not stack:
                     return False
-        return not stack
+                char=stack.pop()
+                if char!=hashmap[c]:
+                    return False
+        if not stack:
+            return True
+        return False
