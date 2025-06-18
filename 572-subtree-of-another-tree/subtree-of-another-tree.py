@@ -13,11 +13,8 @@ class Solution:
                 return False
             return r1.val==r2.val and same(r1.left,r2.left) and same(r1.right,r2.right)
         
-        if not root and not subRoot:
-            return True
-        if not root or not subRoot:
+        if not root:
             return False 
-        if root.val==subRoot.val:
-            if same(root,subRoot):
-                return True
+        if same(root,subRoot):
+            return True
         return self.isSubtree(root.left,subRoot) or self.isSubtree(root.right,subRoot)
