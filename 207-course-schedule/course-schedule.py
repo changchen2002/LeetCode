@@ -1,8 +1,8 @@
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         adj={i:[] for i in range(numCourses)}
-        for pre,course in prerequisites:
-            adj[pre].append(course)
+        for course,pre in prerequisites:
+            adj[course].append(pre)
         
         visit=set()
         def dfs(c):
@@ -18,7 +18,4 @@ class Solution:
             adj[c]=[]
             return True
 
-        for c in adj.keys():
-            if not dfs(c):
-                return False
-        return True
+        return all(dfs(course)for course in range(numCourses))
