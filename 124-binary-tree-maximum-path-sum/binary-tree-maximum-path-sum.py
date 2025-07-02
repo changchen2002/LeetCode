@@ -16,5 +16,3 @@ class Solution:
             return root.val+max(left,right)
         dfs(root)
         return self.res
-
-            
