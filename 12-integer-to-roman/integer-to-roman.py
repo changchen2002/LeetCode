@@ -16,9 +16,9 @@ class Solution:
             (1,    "I")
         ]
 
-        res=[]
+        res=""
         for n,c in roman:
             while num>=n:
                 num-=n
-                res.append(c)
-        return "".join(res)
+                res+=c
+        return res
