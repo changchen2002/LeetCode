@@ -5,7 +5,7 @@ class Solution:
             m=l+(r-l)//2
             if nums[m]==target:
                 return m
-            if nums[l]<=nums[m]: #要不左边有序,要不右边有序
+            if nums[l]<=nums[m]: #要不左边有序,要不右边有序. 有重复值所以要相等
                 if nums[l]<=target<nums[m]:
                     r=m-1
                 else:
