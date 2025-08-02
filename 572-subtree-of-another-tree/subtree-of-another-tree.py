@@ -12,12 +12,12 @@ class Solution:
             if not p or not q:
                 return False
             return p.val==q.val and same(p.left,q.left) and same(p.right,q.right)
-
-        if same(root,subRoot):
-            return True
+            
         if not root:
             return False
-
+        if same(root,subRoot):
+            return True
+        
         return self.isSubtree(root.left,subRoot) or self.isSubtree(root.right,subRoot)
             
 
