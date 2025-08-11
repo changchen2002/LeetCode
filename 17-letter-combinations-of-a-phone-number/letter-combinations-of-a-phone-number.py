@@ -7,14 +7,14 @@ class Solution:
             "6": "mno", "7": "pqrs", "8": "tuv", "9": "wxyz"
         }
         res=[]
-        def backtrack(idx,path):
-            if idx==len(digits):
+        def backtrack(i,path):
+            if i==len(digits):
                 res.append("".join(path))
                 return
-            letters=mapping[digits[idx]]
-            for letter in letters:
+            for letter in mapping[digits[i]]:
                 path.append(letter)
-                backtrack(idx+1,path)
+                backtrack(i+1,path)
                 path.pop()
+            return
         backtrack(0,[])
         return res
