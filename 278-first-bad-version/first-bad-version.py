@@ -3,20 +3,11 @@
 
 class Solution:
     def firstBadVersion(self, n: int) -> int:
-        if n==1:
-            return 1
         l,r=1,n
-        while l<r:
+        while l<=r:
             m=l+(r-l)//2
-            a=isBadVersion(m)
-            b=isBadVersion(m+1)
-            if not a and b:
-                return m+1
-            elif a and b:
-                r=m
-            elif not a and not b:
+            if not isBadVersion(m):
                 l=m+1
+            if isBadVersion(m):
+                r=m-1
         return l
-
-
-        
