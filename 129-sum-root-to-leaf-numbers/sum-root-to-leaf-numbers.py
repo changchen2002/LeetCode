@@ -14,4 +14,4 @@ class Solution:
                 return curr
             return dfs(node.left,curr)+dfs(node.right,curr)
         return dfs(root,0)
-        
+            
