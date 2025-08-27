@@ -1,16 +1,20 @@
 class Solution:
     def maxRemoval(self, nums: List[int], queries: List[List[int]]) -> int:
         queries.sort()
-        available=SortedList() #maxHeap
-        chosen=SortedList() #minHeap
+        idx=0
+        available=[] #maxHeap
+        chosen=[] #minHeap
 
         for i,num in enumerate(nums):
-            while queries and queries[0][0]<=i:
-                available.add(queries.pop(0)[1])
+            while idx<len(queries) and queries[idx][0]<=i:
+                heapq.heappush(available,-queries[idx][1])
+                idx+=1
             while chosen and chosen[0]<i:
-                chosen.pop(0)
+                heapq.heappop(chosen)
             while num>len(chosen):
-                if not available or available[-1]<i:
+                if not available or -available[0]<i:
                     return -1
-                chosen.add(available.pop())
+                top=-heapq.heappop(available)
+                heapq.heappush(chosen,top)
+
         return len(available)
