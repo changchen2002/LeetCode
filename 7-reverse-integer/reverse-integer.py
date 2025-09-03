@@ -4,7 +4,9 @@ class Solution:
         rev,x=0,abs(x)
         while x:
             x,mod=divmod(x,10)
-            rev=rev*10+mod
-            if rev>2**31-1:
+            if rev>(2**31-1)//10:
                 return 0
+            elif rev==(2**31-1)//10 and mod>7:
+                return 0
+            rev=rev*10+mod
         return sign*rev
