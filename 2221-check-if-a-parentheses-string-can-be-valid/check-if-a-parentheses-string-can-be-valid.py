@@ -17,7 +17,7 @@ class Solution:
                 else:
                     return False
         
-        balance=0
+        balance=0 #balance 表示 “需要被匹配的左括号数”
         for i in range(len(s)-1,-1,-1):
             if locked[i]=='0':
                 balance-=1
@@ -29,4 +29,11 @@ class Solution:
                 balance-=1
             if balance>0:
                 return False
-        return balance<=0
+        return l<=0
+
+    
+    # (((())(((())
+    # 111111010111
+    # l=2
+    # count=2
+    # needLeft=
