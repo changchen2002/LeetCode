@@ -1,67 +1,50 @@
-struct Node{
-    int key;
-    int val;
-    Node *next;
-    Node *prev;
-    Node(int key, int val) : key(key), val(val), next(nullptr), prev(nullptr){}
-}; //定义struct 或class 之后必须加分号，这是 C++ 的语法规定。
-
 class LRUCache {
 public:
     int cap;
-    unordered_map<int, Node *> dic;  //unordered_map=hashmap, map=根据键的大小自动排序O(log)
-    Node *head = new Node(-1, -1);
-    Node *tail = new Node(-1, -1);
+    unordered_map<int,list<pair<int,int>>::iterator> dic;
+    //:: 意思是iterator是定义在它左边的那个类或命名空间内部的
+    //iterator 存储的是该缓存项在 lru 链表中的精确**内存地址。
+    list<pair<int,int>> lru; //pair只能两个,用.first 和 .second 访问
 
-    LRUCache(int capacity) : cap(capacity){ //Initialization 更快
-        head->next=tail;
-        tail->prev=head;  //Assignment
-    }
-    
+    LRUCache(int capacity): cap(capacity) {}
+
     int get(int key) {
-        if (dic.find(key)==dic.end()){ //没找到会返回一个特殊的迭代器，指向哈希表中最后一个元素的下一个位置
-            return -1;
-        }
-        Node *node=dic[key];
-        remove(node);
-        add(node);
-        return node->val;
+        auto it=dic.find(key);
+        if (it==dic.end()) return -1;
+        int value=it->second->second; 
+        //it->first=key, it->second是list<pair<int,int>>这个迭代器,it->second->second是pair的第二个元素
+        lru.erase(it->second);   //迭代器O(1)
+        lru.push_front({key,value}); //
+
+        dic.erase(it);
+        dic[key]=lru.begin(); //
+        return value;
     }
     
     void put(int key, int value) {
+        auto it=dic.find(key);
         if (dic.find(key)!=dic.end()){
-            Node *oldNode=dic[key];
-            remove(oldNode);
+            lru.erase(it->second); //it 在dic中是什么,包含key和 iterator?然后it->second 是iterator?
+            dic.erase(it);
         }
-        Node *node=new Node(key,value);
-        dic[key]=node;
-        add(node);
-
-        if (dic.size()>cap){  //.size()=len()
-            Node *deleteNode=head->next;
-            remove(deleteNode);
-            dic.erase(deleteNode->key); //先找到deleteNode才能找到它的key
+        lru.push_front({key,value}); //传入多个值就用{}
+        dic[key]=lru.begin();
+        if (dic.size()>cap){
+            auto it=dic.find(lru.rbegin()->first); 
+            //reverse begin反向迭代器指向列表末尾, lru.rbegin()是一个迭代器, lru.rbegin()->first 指向迭代器的第一项也就是key
+            lru.pop_back(); //deque 和 list 都有 pop_front(),O(1)
+            dic.erase(it); //先删lru再删dic,因为it是通过lru指的
         }
-    }
-
-    void add(Node *node){  //永久修改一个大型对象就需要用*
-    //C++ 标准容器 (list, dic, set, vector) 应该使用 引用 (&) 来避免复制
-        Node *pre=tail->prev;
-        pre->next=node;
-        node->prev=pre;
-        node->next=tail;
-        tail->prev=node;
-    }
-
-    void remove(Node *node){
-        node->prev->next=node->next;
-        node->next->prev=node->prev;
     }
 };
 
-/**
- * Your LRUCache object will be instantiated and called as such:
- * LRUCache* obj = new LRUCache(capacity);
- * int param_1 = obj->get(key);
- * obj->put(key,value);
- */
+/*
+访问tuple: 
+    tuple<int, string, double> t = {1, "hello", 3.14};
+    double d = get<1>(t) << endl;  //必须知道精确index
+访问vector:
+    vector<int> v = {10, 20, 30, 40};
+    cout << v[2] << endl; //endl 直接打印
+count<<"hello"\n;
+cout << "world" << endl; 保证看见
+*/
