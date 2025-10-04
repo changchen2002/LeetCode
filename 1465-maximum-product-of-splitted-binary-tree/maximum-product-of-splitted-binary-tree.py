@@ -8,12 +8,16 @@ class Solution:
     def maxProduct(self, root: Optional[TreeNode]) -> int:
         modulo=10**9+7
         res=float('-inf')
+        total=0
         def getSum(node):
+            nonlocal total
             if not node:
                 return 0
-            return getSum(node.left)+getSum(node.right)+node.val
-
-        total=getSum(root)
+            total+=node.val
+            getSum(node.left)
+            getSum(node.right)
+            return
+        getSum(root)
         def dfs(node):
             nonlocal res
             if not node:
