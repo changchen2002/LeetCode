@@ -12,21 +12,13 @@ class Solution:
         def buildTree(node):
             if not node:
                 return None
+            if node in visit:
+                return visit[node]
             copy=NodeCopy(node.val)
             visit[node]=copy
             copy.left=buildTree(node.left)
             copy.right=buildTree(node.right)
+            copy.random=buildTree(node.random)
             return copy
 
-        def setRandom(node):
-            if not node:
-                return None
-            copy=visit[node]
-            if node.random:
-                copy.random=visit[node.random]
-            setRandom(node.left)
-            setRandom(node.right)
-
-        copy=buildTree(root)
-        setRandom(root)
-        return copy      
+        return buildTree(root)
