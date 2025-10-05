@@ -6,7 +6,7 @@
 #         self.right = right
 class Solution:
     def sumNumbers(self, root: Optional[TreeNode]) -> int:
-        def dfs(node,add):
+        def dfs(node,add): #为什么当参数传入?因为每条路径不一样
             # nonlocal add
             if not node:
                 return 0
