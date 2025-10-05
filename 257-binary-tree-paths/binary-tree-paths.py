@@ -8,17 +8,14 @@ class Solution:
     def binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
         res=[]
         def backtrack(node,path):
+            if not node:
+                return
             path.append(str(node.val))
-            if not node.left and not node.right:
-                res.append("->".join(path))
-            else:
-                if node.left:
-                    backtrack(node.left,path)
-                    path.pop()
-                if node.right:
-                    backtrack(node.right,path)
-                    path.pop()
 
-        if root:
-            backtrack(root,[])
+            if not node.left and not node.right:
+                res.append("->".join(path[:]))
+            backtrack(node.left,path)
+            backtrack(node.right,path)
+            path.pop()
+        backtrack(root,[])
         return res
