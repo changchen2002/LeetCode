@@ -1,18 +1,19 @@
 class Solution:
     def floodFill(self, image: List[List[int]], sr: int, sc: int, color: int) -> List[List[int]]:
-        start=image[sr][sc]
-        if start==color:
-            return image
-
         rows,cols=len(image),len(image[0])
-        image[sr][sc]=color
-        q=deque([(sr,sc)])
-        directions=[[0,1],[0,-1],[1,0],[-1,0]]
-        while q:
-            r,c=q.popleft()
+        directions=[[0,1],[0,-1],[-1,0],[1,0]]
+        cur=image[sr][sc]
+        def dfs(r,c):
+            image[r][c]=-1
             for dr,dc in directions:
                 nr,nc=r+dr,c+dc
-                if 0<=nr<rows and 0<=nc<cols and image[nr][nc]==start:
-                    image[nr][nc]=color
-                    q.append((nr,nc))
+                if 0<=nr<rows and 0<=nc<cols and image[nr][nc]==cur:
+                    image[nr][nc]=-1
+                    dfs(nr,nc)
+        
+        dfs(sr,sc)
+        for r in range(rows):
+            for c in range(cols):
+                if image[r][c]==-1:
+                    image[r][c]=color
         return image
