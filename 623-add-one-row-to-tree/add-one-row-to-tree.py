@@ -14,14 +14,10 @@ class Solution:
                 return None
             depth-=1
             if depth==1:
-                tmpl=node.left
-                tmpr=node.right
-                newl=TreeNode(val)
-                newr=TreeNode(val)
+                newl=TreeNode(val,node.left)
+                newr=TreeNode(val,None,node.right)
                 node.left=newl
                 node.right=newr
-                newl.left=dfs(tmpl,-1)
-                newr.right=dfs(tmpr,-1)
             else:
                 dfs(node.left,depth)
                 dfs(node.right,depth)
