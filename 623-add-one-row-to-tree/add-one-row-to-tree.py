@@ -21,5 +21,5 @@ class Solution:
             else:
                 dfs(node.left,depth)
                 dfs(node.right,depth)
-            return node
-        return dfs(root,depth)
+        dfs(root,depth)
+        return root
