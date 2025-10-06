@@ -18,6 +18,5 @@ class Solution:
             dfs(node.left,targetSum,path)
             dfs(node.right,targetSum,path)
             path.pop()
-            targetSum+=node.val
         dfs(root,targetSum,[])
         return res
