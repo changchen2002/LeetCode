@@ -8,14 +8,14 @@ class Solution:
     def maxDepth(self, root: Optional[TreeNode]) -> int:
         if not root:
             return 0
-        q=collections.deque([root]) #[root] otherwise 'TreeNode' object is not iterable
         res=0
-        while q:
-            res+=1
-            for _ in range(len(q)):
-                node=q.popleft()
-                if node.left:
-                    q.append(node.left)
-                if node.right:
-                    q.append(node.right)
+        def dfs(node,depth):
+            nonlocal res
+            if not node:
+                return 0
+            depth+=1
+            res=max(res,depth)
+            dfs(node.left,depth)
+            dfs(node.right,depth)
+        dfs(root,0)
         return res
