@@ -8,14 +8,4 @@ class Solution:
     def maxDepth(self, root: Optional[TreeNode]) -> int:
         if not root:
             return 0
-        res=0
-        def dfs(node,depth):
-            nonlocal res
-            if not node:
-                return 0
-            depth+=1
-            res=max(res,depth)
-            dfs(node.left,depth)
-            dfs(node.right,depth)
-        dfs(root,0)
-        return res
+        return 1+max(self.maxDepth(root.left),self.maxDepth(root.right))
