@@ -11,7 +11,7 @@ class Solution:
         self.res=0
         def dfs(node,path):
             if not node:
-                return 0
+                return
             path+=1
             self.res=max(self.res,path)
             for c in node.children:
