@@ -1,18 +1,27 @@
 class Solution:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        #adj list(pre->course), for pre indegree==0 we take it first,
+        #mark pre as vis, for c, if c is vis, return False. else: cou.outdegree-1, if outdegree==0, take it. in the end if outdegree, return False
+        if numCourses<2:
+            return [0]
+        
         adj=defaultdict(list)
-        indegree=[0]*numCourses
-        for cur,pre in prerequisites:
-            adj[pre].append(cur)
-            indegree[cur]+=1
-        q=deque([i for i in range(numCourses) if indegree[i]==0])
-        res=[]
+        indeg=[0]*numCourses
+        for c,p in prerequisites:
+            adj[p].append(c)
+            indeg[c]+=1
+
+        res=[i for i in range(numCourses) if indeg[i]==0]
+        q=deque(res)
+        
         while q:
-            course=q.popleft()
-            res.append(course)
-            for nei in adj[course]:
-                indegree[nei]-=1
-                if indegree[nei]==0:
-                    q.append(nei)
+            p=q.popleft()
+            for c in adj[p]:
+                indeg[c]-=1
+                if indeg[c]==0:
+                    res.append(c)
+                    q.append(c)
         return res if len(res)==numCourses else []
 
+# adj[0]=[1]
+# indeg[0]=1
