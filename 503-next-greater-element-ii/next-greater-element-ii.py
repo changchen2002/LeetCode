@@ -4,7 +4,7 @@ class Solution:
         dec=[]
         res=[-1]*n
         for i in range(2*n):
-            while dec and nums[i%n]>nums[dec[-1]]:
+            while dec and nums[i%n]>nums[dec[-1]]: #while. nums[dec[-1]].
                 res[dec.pop()]=nums[i%n]
             dec.append(i%n)
         return res
