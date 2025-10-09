@@ -2,15 +2,12 @@ class StockSpanner:
 
     def __init__(self):
         self.dec=[]
-        self.hashmap={}
 
     def next(self, price: int) -> int:
         res=1        
-        while self.dec and price>=self.dec[-1]:
-            prev=self.dec.pop()
-            res+=self.hashmap[prev]
-        self.dec.append(price)
-        self.hashmap[price]=res
+        while self.dec and price>=self.dec[-1][0]:
+            res+=self.dec.pop()[1]
+        self.dec.append((price,res))
         return res
 
 
