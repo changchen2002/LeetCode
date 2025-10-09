@@ -1,17 +1,18 @@
 class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
-        stack=[[-1,-1]]
-        res=0
-        for i,height in enumerate(heights):
-            while stack[-1][0]!=-1 and stack[-1][0]>height:
-                top,idx=stack.pop()
-                width=i-stack[-1][1]-1
-                res=max(res,top*width)
-            stack.append([height,i])
-        
-        while stack[-1][0]!=-1:
-            top,idx=stack.pop()
-            width=len(heights)-stack[-1][1]-1
-            res=max(res,top*width)
+        # 对于某个柱子 heights[i]，
+        # 它能向左延伸，直到遇到第一个比它矮的柱子；
+        # 也能向右延伸，直到遇到第一个比它矮的柱子。
 
+        stack=[]
+        res=0
+        heights.append(0)
+        for i,h in enumerate(heights):
+            while stack and h<heights[stack[-1]]:
+                height=heights[stack.pop()]
+                width=i if not stack else i-stack[-1]-1
+                res=max(res,height*width)
+            stack.append(i)
         return res
+
+
