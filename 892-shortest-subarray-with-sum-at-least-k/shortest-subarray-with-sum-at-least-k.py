@@ -1,19 +1,25 @@
 class Solution:
     def shortestSubarray(self, nums: List[int], k: int) -> int:
-        #前缀合越小越好, index越大越好
-        #monotonic queue保证index+, 前缀和递增
-        n=len(nums)
-        pre=[0]
-        for num in nums:
-            pre.append(pre[-1]+num)
-        
-        q=deque()
-        res=n+1
-        for i in range(len(pre)):
-            while q and pre[i]-pre[q[0]]>=k:
-                idx=q.popleft()
-                res=min(res,i-idx)
-            while q and pre[i]<=pre[q[-1]]:
-                q.pop()
-            q.append(i)
-        return res if res<=n else -1
+        inc=deque()
+        res=float('inf')
+        cur=0
+
+        for i,n in enumerate(nums):
+            cur+=n 
+            while inc and cur-inc[0][1]>=k:
+                res=min(res,i-inc.popleft()[0])
+         
+            while inc and cur<=inc[-1][1]:
+                inc.pop()
+            inc.append((i,cur))
+
+            if cur>=k:
+                res=min(res,i+1)
+            
+        return res if res!=float('inf') else -1
+
+
+# cur    i    n     inc
+# 2      0    2      [0]
+# 1      1    -1     [0,1]
+# 3      2    2      [0,1,2]
