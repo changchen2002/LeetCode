@@ -4,11 +4,12 @@ class Solution:
         cur=0
         for i,n in enumerate(nums):
             cur+=n
-            if cur%k in hashmap.keys():
-                if i-hashmap[cur%k]>=2:
+            target=cur%k
+            if target in hashmap.keys():
+                if i-hashmap[target]>=2:
                     return True
             else:
-                hashmap[cur%k]=i
+                hashmap[target]=i
         return False
 
         # sum(subarray) % k == 0
