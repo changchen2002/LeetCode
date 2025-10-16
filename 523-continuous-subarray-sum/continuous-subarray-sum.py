@@ -1,0 +1,16 @@
+class Solution:
+    def checkSubarraySum(self, nums: List[int], k: int) -> bool:
+        hashmap={0:-1}
+        cur=0
+        for i,n in enumerate(nums):
+            cur+=n
+            if cur%k in hashmap.keys():
+                if i-hashmap[cur%k]>=2:
+                    return True
+            else:
+                hashmap[cur%k]=i
+        return False
+
+        # sum(subarray) % k == 0
+        # (pre[j] - pre[i]) % k == 0
+        # pre[j] % k == pre[i] % k
