@@ -8,6 +8,7 @@ class Solution:
     def rob(self, root: Optional[TreeNode]) -> int:
         if not root:
             return 0
+        
         def dfs(node):
             if not node:
                 return (0,0)
@@ -16,4 +17,4 @@ class Solution:
             rob=node.val+l[1]+r[1]
             not_rob=max(l)+max(r)
             return (rob,not_rob)
-        return max(dfs(root))
+        return max(dfs(root))    
