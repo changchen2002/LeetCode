@@ -6,22 +6,20 @@
 #         self.right = right
 class Solution:
     def sumNumbers(self, root: Optional[TreeNode]) -> int:
-        def dfs(node,add): #为什么当参数传入?因为每条路径不一样
-            # nonlocal add
+        def dfs(node,cur):
             if not node:
                 return 0
-            add=add*10+node.val
+            cur=cur*10+node.val
             if not node.left and not node.right:
-                print("leaf:",node.val,add)
-                return add
-            print("enter:", node.val, add)
-            l=dfs(node.left,add)
-            print("left done:",node.val, l)
-            r=dfs(node.right,add)
-            print("right done:", node.val, r)
-            print("return:", node.val,l+r)
+                return cur
+            l=dfs(node.left,cur)
+            r=dfs(node.right,cur)  
             return l+r
-        return dfs(root,0)
         
+        return dfs(root,0)
 
-            
+    
+# node   cur    l    r
+# 1       10    12  
+# 2       12    0    0
+# null               
