@@ -1,19 +1,19 @@
 class Solution:
     def shipWithinDays(self, weights: List[int], days: int) -> int:
-        l=max(weights)
-        r=sum(weights)
-        def getDays(limit):
-            day,curr=1,0
+        l,r=max(weights),sum(weights)
+        def ship(m):
+            load,day=0,1
             for w in weights:
-                if curr+w>limit:
+                if load+w>m:
                     day+=1
-                    curr=0
-                curr+=w
+                    load=0
+                load+=w
             return day
+
         while l<r:
             m=l+(r-l)//2
-            d=getDays(m)
-            if d<=days:
+            day=ship(m)
+            if day<=days:
                 r=m
             else:
                 l=m+1
