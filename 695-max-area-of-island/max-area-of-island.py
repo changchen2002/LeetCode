@@ -1,20 +1,22 @@
 class Solution:
     def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
-        rows,cols=len(grid),len(grid[0])
-        directions=[[0,1],[0,-1],[-1,0],[1,0]]
+        m,n=len(grid),len(grid[0])
+        directions=[[0,1],[0,-1],[1,0],[-1,0]]
         res=0
+        vis=set()
         def dfs(r,c):
             nonlocal res
-            grid[r][c]=0
-            area=1
+            vis.add((r,c))
+            cur=1
             for dr,dc in directions:
                 nr,nc=r+dr,c+dc
-                if 0<=nr<rows and 0<=nc<cols and grid[nr][nc]==1:
-                    area+=dfs(nr,nc)
-            return area
-
-        for r in range(rows):
-            for c in range(cols):
+                if 0<=nr<m and 0<=nc<n and (nr,nc) not in vis and grid[nr][nc]==1:
+                    cur+=dfs(nr,nc)
+            res=max(res,cur)
+            return cur
+        
+        for r in range(m):
+            for c in range(n):
                 if grid[r][c]==1:
-                    res=max(res,dfs(r,c))
+                    dfs(r,c)
         return res
