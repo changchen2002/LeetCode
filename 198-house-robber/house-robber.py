@@ -5,8 +5,6 @@ class Solution:
             return 0
         if n==1:
             return nums[0]
-        if n==2: #别忘
-            return max(nums)
 
         dp=[0]*(n+1)
         dp[1],dp[2]=nums[0],nums[1]
