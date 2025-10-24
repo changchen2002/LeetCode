@@ -9,7 +9,7 @@ class Solution:
         res=True
         prev=float('-inf')
         def inorder(node):
-            nonlocal res,prev
+            nonlocal res,prev #prev必须在外面,不然回到上一层就没了. 以及res,prev都得写nonlocal
             if not node:
                 return
             inorder(node.left)
