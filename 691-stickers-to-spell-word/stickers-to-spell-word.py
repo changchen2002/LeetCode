@@ -1,65 +1,33 @@
 class Solution:
     def minStickers(self, stickers: List[str], target: str) -> int:
-        t_count = collections.Counter(target)
-        A = [collections.Counter(sticker) & t_count
-             for sticker in stickers]
+        target_count = Counter(target)
+        # Preprocess stickers: only keep chars that are in target
+        stickers_count = [Counter(s) & target_count for s in stickers]
+        stickers_count = [s for s in stickers_count if s]  # remove empty stickers
 
-        for i in range(len(A) - 1, -1, -1):
-            if any(A[i] == A[i] & A[j] for j in range(len(A)) if i != j):
-                A.pop(i)
+        start = ''.join(sorted(target))  # initial state
+        queue = deque([(start, 0)])
+        visited = set()
+        visited.add(start)
 
-        stickers = ["".join(s_count.elements()) for s_count in A]
-        dp = [-1] * (1 << len(target))
-        dp[0] = 0
-        for state in range(1 << len(target)):
-            if dp[state] == -1: continue
-            for sticker in stickers:
-                now = state
-                for letter in sticker:
-                    for i, c in enumerate(target):
-                        if (now >> i) & 1: continue
-                        if c == letter:
-                            now |= 1 << i
-                            break
-                if dp[now] == -1 or dp[now] > dp[state] + 1:
-                    dp[now] = dp[state] + 1
+        while queue:
+            remain, used = queue.popleft()
+            if not remain:
+                return used  # done
 
-        return dp[-1]
+            remain_count = Counter(remain)
 
-#         n=len(target)
-#         counts=[]
-#         targetSet=set(target)
-#         for s in stickers:
-#             c=Counter()
-#             for ch in s:
-#                 if ch in targetSet:
-#                     c[ch]+=1
-#             counts.append(c)
-# # [
-# #  Counter({'w': 1, 'i': 1, 't': 1, 'h': 1}),
-# #  Counter({'e': 2, 'x': 1, 'a': 1, 'm': 1, 'p': 1, 'l': 1}),
-# #  Counter({'e': 3, 'c': 2, 'i': 1, 'n': 1, 's': 1})
-# # ]
-#         def dp(mask):
-#             if mask==(1<<n)-1:
-#                 return 0
-#             res=float('inf')
-#             i=0
-#             while (mask>>i)&1:
-#                 i+=1
-#             ch=target[i]
-#             for c in counts:
-#                 if c[ch]==0:
-#                     continue
-#                 new_mask=mask
-#                 remain=c.copy()
-#                 for j in range(i,n):
-#                     if ((mask>>j)&1)==0 and remain[target[j]]>0:
-#                         remain[target[j]]-=1
-#                         new_mask |=1 <<j
-#                 sub=dp(new_mask)
-#                 if sub!=-1:
-#                     res=min(res,sub+1)
-#             return res if res!=float('inf') else -1
-#         return dp(0)
+            for sticker in stickers_count:
+                # Optimization: skip stickers that don't contain first needed char
+                if remain[0] not in sticker:
+                    continue
 
+                # Apply sticker
+                new_count = remain_count - sticker
+                new_remain = ''.join(sorted(char * cnt for char, cnt in new_count.items()))
+
+                if new_remain not in visited:
+                    visited.add(new_remain)
+                    queue.append((new_remain, used + 1))
+
+        return -1  # impossible
