@@ -1,35 +1,34 @@
 class Solution:
     def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
-        graph = defaultdict(dict)
-        for (A, B), val in zip(equations, values):
-            graph[A][B] = val
-            graph[B][A] = 1 / val
-
-        memo = {}
-
-        def bfs(start, end):
-            if (start, end) in memo:
-                return memo[(start, end)]
-            if start not in graph or end not in graph:
+        adj=defaultdict(dict) #这种双层两个key的是dict
+        for (x,y),v in zip(equations,values):
+            adj[x][y]=v
+            adj[y][x]=1/v
+        
+        memo={}
+        def bfs(src,des):
+            if (src,des) in memo:
+                return memo[(src,des)]
+            if src not in adj or des not in adj:
                 return -1.0
-            if start == end:
+            if src==des:
                 return 1.0
-
-            q = deque([(start, 1.0)])
-            visited = {start}
+            
+            q=deque([(src,1.0)])
+            vis=set([src])
             while q:
-                node, prod = q.popleft()
-                for nei, val in graph[node].items():
-                    if nei in visited:
-                        continue
-                    new_prod = prod * val
-                    if nei == end:
-                        memo[(start, end)] = new_prod
-                        memo[(end, start)] = 1 / new_prod
-                        return new_prod
-                    visited.add(nei)
-                    q.append((nei, new_prod))
-            memo[(start, end)] = -1.0
-            return -1.0
+                cur,v=q.popleft()
+                if cur==des:
+                    memo[(src,cur)]=v
+                    memo[(cur,src)]=1/v
+                    return v
+                for nei,val in adj[cur].items():
+                    if nei not in vis:
+                        vis.add(nei)
+                        q.append((nei,v*val))
 
-        return [bfs(a, b) for a, b in queries]
+            memo[(src,des)]=-1.0
+            return memo[(src,des)] 
+
+        return [bfs(src,des) for (src,des) in queries]       
+
