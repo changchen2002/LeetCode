@@ -1,15 +1,13 @@
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
         res=[]
-        def backtrack(left,right,s):
-            if left>n or right>n:
-                return
-            if (left+right)==n*2:
-                res.append(s)
-                return 
-            if left<n:
-                backtrack(left+1,right,s+"(")
-            if right<left:
-                backtrack(left,right+1,s+")")
-        backtrack(0,0,"")
+        def backtrack(l,r,path):
+            if l==n and r==n:
+                res.append(''.join(path))
+            if l<n:
+                backtrack(l+1,r,path+["("])
+            if l>r:
+                backtrack(l,r+1,path+[')'])
+        backtrack(0,0,[])
         return res
+                
