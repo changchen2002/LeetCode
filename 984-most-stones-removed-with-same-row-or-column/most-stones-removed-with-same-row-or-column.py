@@ -1,17 +1,17 @@
 class Solution:
     def removeStones(self, stones: List[List[int]]) -> int:
         n=len(stones)
-        parent=list(range(n))
+        roots=list(range(n))
         def find(x):
-            if parent[x]!=x:
-                parent[x]=find(parent[x])
-            return parent[x]
-        
-        def union(i,j):
-            parent[find(i)]=find(j)
+            if roots[x]!=x:
+                roots[x]=find(roots[x])
+            return roots[x]
+        def union(x,y):
+            r1,r2=find(x),find(y)
+            roots[r1]=r2
         
         rows,cols={},{}
-        
+
         for i,(r,c) in enumerate(stones):
             if r in rows:
                 union(i,rows[r])
@@ -21,6 +21,7 @@ class Solution:
                 union(i,cols[c])
             else:
                 cols[c]=i
-        roots=len({find(i) for i in range(n)})
-        return n-roots
+        
+        return n-len({find(x) for x in range(n)})
+            
 
