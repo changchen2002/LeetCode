@@ -3,24 +3,21 @@ class Solution:
         if n<=2:
             return list(range(n))
         adj=defaultdict(list)
-        indeg=[0]*n
+        # indeg=[0]*n
         for u,v in edges:
             adj[u].append(v)
             adj[v].append(u)
-            indeg[v]+=1
-            indeg[u]+=1
+            # indeg[v]+=1
+            # indeg[u]+=1
         
-        q=deque([i for i in range(n) if indeg[i]==1])
-        vis=set(q)
-        while q:
-            print(q)
+        q=deque([i for i in range(n) if len(adj[i])==1])
+        remain=n
+        while remain>2:
+            remain-=len(q)
             for _ in range(len(q)):
                 cur=q.popleft()
-                vis.add(cur)
-                for nei in adj[cur]:
-                    if nei not in vis:
-                        indeg[nei]-=1
-                        if indeg[nei]==1:
-                            q.append(nei)
-            if n-len(vis)<=2:
-                return list(q)
+                nei=adj[cur].pop()
+                adj[nei].remove(cur)
+                if len(adj[nei])==1:
+                    q.append(nei)
+        return list(q)
