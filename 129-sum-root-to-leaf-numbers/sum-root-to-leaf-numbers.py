@@ -12,14 +12,9 @@ class Solution:
             cur=cur*10+node.val
             if not node.left and not node.right:
                 return cur
-            l=dfs(node.left,cur)
-            r=dfs(node.right,cur)  
-            return l+r
-        
+            left=dfs(node.left,cur)
+            right=dfs(node.right,cur)
+            return left+right
         return dfs(root,0)
 
-    
-# node   cur    l    r
-# 1       10    12  
-# 2       12    0    0
-# null               
+
