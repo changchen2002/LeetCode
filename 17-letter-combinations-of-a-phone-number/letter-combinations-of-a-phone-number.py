@@ -13,11 +13,13 @@ class Solution:
         res=[]
         def dfs(cur,idx):
             if idx==len(digits):
-                res.append(cur)
+                res.append(''.join(cur))
                 return
             d=digits[idx]
             for letter in mapping[d]:
-                dfs(cur+letter,idx+1)
+                cur.append(letter)
+                dfs(cur,idx+1)
+                cur.pop()
         
-        dfs("",0)
+        dfs([],0)
         return res
