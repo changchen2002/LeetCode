@@ -1,11 +1,8 @@
 class Solution:
     def longestSubsequence(self, arr: List[int], difference: int) -> int:
-        hashmap=defaultdict(int)
+        hashmap={}
         res=0
         for i,num in enumerate(arr):
-            if num-difference in hashmap:
-                hashmap[num]=hashmap[num-difference]+1
-            else:
-                hashmap[num]=1
+            hashmap[num]=hashmap.get(num-difference,0)+1
             res=max(res,hashmap[num])
         return res
