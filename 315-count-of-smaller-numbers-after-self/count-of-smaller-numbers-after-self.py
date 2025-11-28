@@ -14,6 +14,7 @@ class Solution:
             i=j=0
             merged=[]
             while i<len(left) and j<len(right):
+                # print(left,right,res)
                 if left[i][1]>right[j][1]:
                     res[left[i][0]]+=len(right)-j
                     merged.append(left[i])
@@ -23,6 +24,7 @@ class Solution:
                     j+=1
             merged.extend(left[i:])
             merged.extend(right[j:])
+            # print(merged,res)
             return merged
         
         mergeSort(arr)
