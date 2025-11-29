@@ -1,7 +1,5 @@
 class Solution:
     def reversePairs(self, nums: List[int]) -> int:
-        res=0
-        a=list(enumerate(nums))
         def divideConquer(a):
             nonlocal res
             if len(a)<=1:
@@ -13,14 +11,14 @@ class Solution:
             merged=[]
             i=j=0
             while i<len(left) and j<len(right):
-                if left[i][1]>2*right[j][1]:
-                    res+=len(right)-j
-                    i+=1
-                else:
+                if left[i]>2*right[j]:
+                    res+=len(left)-i
                     j+=1
+                else:
+                    i+=1
             i=j=0
             while i<len(left) and j<len(right):
-                if left[i][1]>right[j][1]:
+                if left[i]<=right[j]:
                     merged.append(left[i])
                     i+=1
                 else:
@@ -29,5 +27,6 @@ class Solution:
             merged.extend(left[i:])
             merged.extend(right[j:])
             return merged
-        divideConquer(a)
+        res=0
+        divideConquer(nums)
         return res
