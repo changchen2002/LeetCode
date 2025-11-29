@@ -1,12 +1,19 @@
 class Solution:
     def countFairPairs(self, nums: List[int], lower: int, upper: int) -> int:
         nums.sort()
-        res=0
-        for i,x in enumerate(nums[:-1]):
-            lo=lower-x
-            hi=upper-x
-            lidx=bisect.bisect_left(nums,lo,i+1) 
-            hidx=bisect.bisect_right(nums,hi,i+1) 
-            print(lidx,hidx)
-            res+=hidx-lidx
-        return res
+        def count(target):
+            l = 0 
+            r = len(nums) - 1
+            res = 0
+
+            while l < r:
+                total = nums[l] + nums[r]
+                if total <= target:
+                    res += r - l
+                    l += 1
+                else:
+                    r -= 1
+            return res
+        
+        return count(upper) - count(lower - 1)
+        
