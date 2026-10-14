@@ -5,16 +5,23 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def sumNumbers(self, root: Optional[TreeNode]) -> int:
-        def dfs(node,cur):
+    def sumNumbers(self, root: TreeNode | None) -> int:
+        s=0
+        def dfs(node,num):
+            nonlocal s
             if not node:
-                return 0
-            cur=cur*10+node.val
+                return
+            num=10*num+node.val
             if not node.left and not node.right:
-                return cur
-            left=dfs(node.left,cur)
-            right=dfs(node.right,cur)
-            return left+right
-        return dfs(root,0)
+                s+=num
+                return
+            dfs(node.left,num)
+            dfs(node.right,num)
+        dfs(root,0)
+        return s
 
+# node    num    s    
+# 1        1     0
+# 2        12    12
+# 3        13    25
 
