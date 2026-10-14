@@ -5,16 +5,18 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def smallestFromLeaf(self, root: Optional[TreeNode]) -> str:
-        res="~"
+    def smallestFromLeaf(self, root: TreeNode | None) -> str:
+        res=None
         def dfs(node,path):
             nonlocal res
             if not node:
                 return
             path.append(chr(ord('a')+node.val))
+
             if not node.left and not node.right:
-                s="".join(reversed(path))
-                res=min(res,s)                
+                s=''.join(path[::-1])
+                if res is None or s<res:
+                    res=s
             dfs(node.left,path)
             dfs(node.right,path)
             path.pop()
