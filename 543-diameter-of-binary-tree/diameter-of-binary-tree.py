@@ -13,17 +13,10 @@ class Solution:
                 return 0
             if not node.left and not node.right:
                 return 1
-            l,r=0,0
-            l+=dfs(node.left)
-            r+=dfs(node.right)
+            l=dfs(node.left)
+            r=dfs(node.right)
             res=max(res,l+r)
             return max(l,r)+1
         dfs(root)
         return res
-    
-# node     path      l      r       res
-# 1                  2      1
-# 2                  1      1
-# 4 
-# 5
-# 3                                    
+            
