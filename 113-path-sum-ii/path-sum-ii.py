@@ -15,8 +15,9 @@ class Solution:
             if not node.left and not node.right:
                 if s==targetSum:
                     res.append(path[:])
-            dfs(node.left,path,s)
-            dfs(node.right,path,s)
+            else:
+                dfs(node.left,path,s)
+                dfs(node.right,path,s)
             path.pop()
 
         dfs(root,[],0)
