@@ -1,25 +1,28 @@
 class Solution:
-    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+    def canFinish(self, numCourses: int, prerequisites: list[list[int]]) -> bool:
         adj=defaultdict(list)
         for a,b in prerequisites:
-            adj[a].append(b)
-        
-        def dfs(c):
-            if c in vis:
-                return False
-            if adj[c]==[]:
+           adj[b].append(a)
+        visited=set()
+        def dfs(node):
+            if not adj[node]:
                 return True
-            vis.add(c)
-            for pre in adj[c]:
-                if not dfs(pre):
+            if node in visited:
+                return False
+            visited.add(node)
+            for nei in adj[node]:
+                if not dfs(nei):
                     return False
-            adj[c]=[]
-            vis.remove(c)
+            visited.remove(node)
+            adj[node]=[]
             return True
         
-        vis=set()
-        for c in range(numCourses):
-            if not dfs(c):
+        for b in range(numCourses):
+            if not dfs(b):
                 return False
         return True
+
+
+            
+
             
