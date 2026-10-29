@@ -1,10 +1,13 @@
 class Solution:
     def subarraySum(self, nums: List[int], k: int) -> int:
-        hashmap=defaultdict(int)
-        hashmap[0]=1
-        cur=res=0
+        dic=defaultdict(int)
+        s=res=0
+        dic[0]=1
         for n in nums:
-            cur+=n
-            res+=hashmap[cur-k]
-            hashmap[cur]+=1
-        return res
+            s+=n
+            res+=dic[s-k]
+            dic[s]+=1
+        return res 
+# n   s   res    dic
+# 1   1    0       1:1
+# 2   3           1:1, 3:1
