@@ -1,10 +1,11 @@
 class Solution:
-    def numSubarraysWithSum(self, nums: List[int], goal: int) -> int:
-        hashmap=defaultdict(int)
-        hashmap[0]=1
-        cur=res=0
+    def numSubarraysWithSum(self, nums: list[int], goal: int) -> int:
+        dic=defaultdict(int)
+        dic[0]=1
+        s=res=0
         for n in nums:
-            cur+=n
-            res+=hashmap[cur-goal]
-            hashmap[cur]+=1
+            s+=n
+            res+=dic[s-goal]
+            dic[s]+=1
         return res
+
