@@ -1,32 +1,19 @@
 class Solution:
-    def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
-        dp=[[0]*(n+1) for _ in range(m+1)]
-        
-        for s in strs:
-            zero=s.count('0')
-            one=s.count('1')
-            for i in range(m,zero-1,-1):
-                for j in range(n,one-1,-1):
-                    dp[i][j]=max(dp[i][j],dp[i-zero][j-one]+1)            
-        return dp[-1][-1]
-        
-        
-        # hashmap=defaultdict()
-        # for s in strs:
-        #     zero,one=0,0
-        #     for c in s:
-        #         if c=='1':
-        #             one+=1
-        #         else:
-        #             zero+=1
-        #     hashmap[s]=(zero,one)  #相同字符串被覆盖掉了
+    def findMaxForm(self, strs: list[str], m: int, n: int) -> int:
+        @cache
+        def dfs(i,j,idx):
+            if idx==len(strs):
+                return 0
+            
+            add=0
+            z=strs[idx].count("0")
+            o=strs[idx].count("1")
 
-        # dp=[[0]*(n+1) for _ in range(m+1)]
+            if i+z<=m and j+o<=n:
+                add=1+dfs(i+z,j+o,idx+1)
 
-        # for key in hashmap:  #for key in hashmap 相同字符串会少一项
-        #     zero,one=hashmap[key]
-        #     for i in range(m,zero-1,-1):
-        #         for j in range(n,one-1,-1):
-        #             dp[i][j]=max(dp[i][j],dp[i-zero][j-one]+1)
+            skip=dfs(i,j,idx+1)
+            
+            return max(add,skip)
 
-        # return dp[-1][-1]   
+        return dfs(0,0,0)
